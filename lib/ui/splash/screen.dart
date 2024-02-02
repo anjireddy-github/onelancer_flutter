@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onelancer_flutter/theme/appTheme.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,10 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.teal,
+    return Scaffold(
       body: Center(
-        child: Text("OpenFreelancer"),
+        child: Text("OpenFreelancer",
+        style: theme.textTheme.headlineLarge,
+        ),
       ),
     );
   }

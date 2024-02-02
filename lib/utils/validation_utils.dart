@@ -24,4 +24,11 @@ class ValidationUtils {
       return 'Password must be at least $minLength characters long and include one upper case letter, one lower case letter, one number, and one special character.';
     }
   }
+
+  static String? validateText(String? text) {
+    final RegExp alphabetRegExp = RegExp(r'^[a-zA-Z]+$');
+
+    return alphabetRegExp.hasMatch(text!) ? null : 'Text should contain only alphabets';
+  }
+
 }

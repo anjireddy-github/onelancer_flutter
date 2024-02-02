@@ -6,6 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+  
 
   var isLoading = false.obs;
   var isLoggedIn = false.obs;
@@ -18,16 +22,16 @@ class AuthController extends GetxController {
   }
 
   Future<void> checkAuthToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? authToken = prefs.getString('auth_token');
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String? authToken = prefs.getString('auth_token');
 
-    if (authToken != null && authToken.isNotEmpty) {
-      // Auth token found, validate it
-      await validateAuthToken(authToken);
-    } else {
-      // Auth token not found, go to login screen
-      goToLoginScreen();
-    }
+    // if (authToken != null && authToken.isNotEmpty) {
+    //   // Auth token found, validate it
+    //   await validateAuthToken(authToken);
+    // } else {
+    //   // Auth token not found, go to login screen
+    //   goToLoginScreen();
+    // }
   }
 
   Future<void> validateAuthToken(String authToken) async {
