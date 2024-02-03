@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: 24,
+                height: 16,
               ),
               LoginFormWidget(authController: _authController),
               const SizedBox(height: 16),
@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomElevatedButton(
                 text: "REGISTER",
                 onPressed: () {
+                  _authController.errorText('');
                   Navigator.of(context).pushNamed('/register');
                 },
               ),

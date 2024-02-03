@@ -1,9 +1,9 @@
-import 'dart:html';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:onelancer_flutter/controllers/auth_controller.dart';
 import 'package:onelancer_flutter/ui/message/screen.dart';
 import 'package:onelancer_flutter/ui/uploadJob/screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  AuthController authController = Get.find();
 
   int _selectedPageIndex = 0;
 
@@ -21,8 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("OpenFreelancer"),
-        actions: const [
-          Icon(Icons.person_off),
+        actions: [
+          IconButton(onPressed: () async { 
+              authController.logout();
+           },
+          icon: Icon(Icons.logout)),
         ],
       ),
       drawer: _buildDrawer(),

@@ -22,24 +22,32 @@ class UserLogInRequest {
   }
 }
 
-class UserSignUpRequest {
-  final String email;
-  final String password;
+class UserRegisterRequest {
+  String firstName;
+  String lastName;
+  String email;
+  String password;
 
-  UserSignUpRequest({
+  UserRegisterRequest({
+    required this.firstName,
+    required this.lastName,
     required this.email,
     required this.password,
   });
 
-  factory UserSignUpRequest.fromJson(Map<String, dynamic> json) {
-    return UserSignUpRequest(
-      email: json['email'] as String,
-      password: json['password'] as String,
+  factory UserRegisterRequest.fromJson(Map<String, dynamic> json) {
+    return UserRegisterRequest(
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
+      email: json['email'] ?? '',
+      password: json['password'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'first_name': firstName,
+      'last_name': lastName,
       'email': email,
       'password': password,
     };

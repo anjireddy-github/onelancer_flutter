@@ -26,27 +26,32 @@ class _OtpScreenState extends State<OtpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Enter OTP",
-              style: theme.textTheme.headlineMedium,
+              Text(
+                "Enter OTP",
+                style: theme.textTheme.headlineMedium,
               ),
-              SizedBox(height: 16,),
-              Text("Email Sent to : " + _authController.emailController.text,
-              style: CustomTextStyles.titleSmallBluegray40001,
+              const SizedBox(
+                height: 16,
               ),
-              SizedBox(height: 24),
+              Obx(() => Text(
+                    "Email Sent to : ${_authController.email}",
+                    style: CustomTextStyles.titleSmallBluegray40001,
+                  )),
+              const SizedBox(height: 24),
               CustomPinCodeTextField(
-                context: context, 
-                controller: _authController.otpController,
-                onChanged: (value){
-                  _authController.otpController.text = value;
-                },
-                ),
-                SizedBox(height: 42),
+                context: context,
+                controller: _authController.otpController, onChanged: (String ) { 
+                  
+                 },
+              ),
+              const SizedBox(height: 42),
               CustomElevatedButton(
-                onPressed: () {
-                //TODO : APi call
-                Navigator.of(context).pushNamedAndRemoveUntil("/home",  (route) => false);
-              }, text: "VERIFY"),
+                  onPressed: () {
+                    //TODO : APi call
+                    // Navigator.of(context)
+                    //     .pushNamedAndRemoveUntil("/home", (route) => false);
+                  },
+                  text: "VERIFY"),
             ],
           ),
         ),

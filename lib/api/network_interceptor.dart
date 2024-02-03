@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_overrides
 
 import 'package:dio/dio.dart';
+import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 
 /// NetworkInterceptor class for intercepting API requests, responses, and exceptions.
 ///

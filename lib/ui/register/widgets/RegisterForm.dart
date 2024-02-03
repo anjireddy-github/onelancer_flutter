@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:onelancer_flutter/controllers/auth_controller.dart';
 import 'package:onelancer_flutter/theme/appTheme.dart';
 import 'package:onelancer_flutter/theme/customTextStyles.dart';
@@ -18,6 +19,8 @@ class RegisterForm extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Obx(() => Align(alignment: Alignment.topLeft, child: Text(authController.errorText.value, style: CustomTextStyles.titleSmallRed700,))),
+
         CustomTextFormField(
           controller: authController.firstNameController,
           hintText: "First Name",
@@ -101,8 +104,7 @@ class RegisterForm extends StatelessWidget {
           text: "REGISTER",
           onPressed: () {
             if (_formKey.currentState?.validate() ?? false) {
-              // authController.register();
-              Navigator.of(context).pushNamed('/otp');
+              authController.register();
             }
           },
         ),

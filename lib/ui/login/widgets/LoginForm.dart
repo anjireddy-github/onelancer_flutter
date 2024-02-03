@@ -14,25 +14,27 @@ class LoginFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    bool showPassword = true;
+    final formKey = GlobalKey<FormState>();
 
     return Container(
       child: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Obx(() => Align(alignment: Alignment.topLeft, child: Text(authController.errorText.value, style: CustomTextStyles.titleSmallRed700,))),
+            SizedBox(height: 8,),
             CustomTextFormField(
               controller: authController.emailController,
               hintText: "Email",
               textInputType: TextInputType.emailAddress,
               validator: ValidationUtils.validateEmail,
-              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
               borderDecoration: TextFormFieldStyleHelper.fillIndigo,
               fillColor: themeColors.indigo50,
             ),
-            SizedBox(height: 16,),
+            const SizedBox(height: 16,),
+            Obx(() => 
             CustomTextFormField(
               controller: authController.passwordController,
               hintText: "Password",
@@ -42,19 +44,19 @@ class LoginFormWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8),
                 child: IconButton(
                   onPressed: (){
-                    // setState(() {showPassword = !showPassword;});
+                    authController.showPassword(!authController.showPassword.value);
                   },
-                  icon: Icon(Icons.visibility,size: 24, color: themeColors.blueGray600,),
+                  icon: Icon(authController.showPassword.value?Icons.visibility:Icons.visibility_off,size: 24, color: themeColors.blueGray600,),
                 ),
               ),
-              suffixConstraints: BoxConstraints(maxHeight: 50),
+              suffixConstraints: const BoxConstraints(maxHeight: 50),
               validator: ValidationUtils.validatePassword,
-              obscureText: showPassword,
-              contentPadding: EdgeInsets.only(left: 16,top: 15,bottom: 15),
+              obscureText: authController.showPassword.value,
+              contentPadding: const EdgeInsets.only(left: 16,top: 15,bottom: 15),
               borderDecoration: TextFormFieldStyleHelper.fillIndigo,
               fillColor: themeColors.indigo50,
-            ),
-            SizedBox(height:20),
+            )),
+            const SizedBox(height:20),
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
@@ -67,13 +69,12 @@ class LoginFormWidget extends StatelessWidget {
                 ),
               ),
             ),
-              SizedBox(height:16),
+              const SizedBox(height:16),
             CustomElevatedButton(
               text: "LOGIN",
               onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                      // authController.login();
-                      Navigator.of(context).pushNamed('/otp');
+                if (formKey.currentState?.validate() ?? false) {
+                      authController.login();
                     }
               }
               ,
