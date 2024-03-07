@@ -9,6 +9,7 @@ class CustomElevatedButton extends BaseButton {
     this.decoration,
     this.leftIcon,
     this.rightIcon,
+    this.isLoading,
     EdgeInsets? margin,
     VoidCallback? onPressed,
     ButtonStyle? buttonStyle,
@@ -36,6 +37,9 @@ class CustomElevatedButton extends BaseButton {
 
   final Widget? rightIcon;
 
+  bool? isLoading = false;
+
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -52,19 +56,30 @@ class CustomElevatedButton extends BaseButton {
         margin: margin,
         decoration: decoration,
         child: ElevatedButton(
+
           style: buttonStyle,
           onPressed: isDisabled ?? false ? null : onPressed ?? () {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              leftIcon ?? const SizedBox.shrink(),
-              Text(
-                text,
-                style: buttonTextStyle ?? theme.textTheme.bodyLarge,
-              ),
-              rightIcon ?? const SizedBox.shrink(),
+              if (leftIcon != null) leftIcon!,
+              if (isLoading ?? false)
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.secondary,
+                  ),
+                )
+              else
+                Text(
+                  text,
+                  style: buttonTextStyle ?? theme.textTheme.bodyLarge,
+                ),
+              if (rightIcon != null) rightIcon!,
             ],
+
           ),
         ),
       );

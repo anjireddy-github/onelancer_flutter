@@ -9,7 +9,7 @@ class ApiClient {
   ApiClient()
       : dio = Dio(BaseOptions(
           baseUrl: 'https://7bkmgv7x-8080.inc1.devtunnels.ms',
-          connectTimeout: const Duration(seconds: 10),
+          connectTimeout: const Duration(seconds: 100),
           contentType: 'application/json',
         )) {
     dio.interceptors.add(NetworkInterceptor());

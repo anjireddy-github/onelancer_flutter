@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'package:onelancer_flutter/api/auth.dart';
+import 'package:onelancer_flutter/api/store.dart';
 import 'package:onelancer_flutter/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dio/src/response.dart';
 
 class AuthController extends GetxController {
-  TextEditingController emailController = TextEditingController(text: "mail@gmail.com");
-  TextEditingController passwordController = TextEditingController(text: "Anji@1998");
-  TextEditingController firstNameController = TextEditingController(text: "first");
-  TextEditingController lastNameController = TextEditingController(text: "last");
+  TextEditingController emailController =
+      TextEditingController(text: "anjireddy5889@gmail.com");
+  TextEditingController passwordController =
+      TextEditingController(text: "12345@Aa6");
+  TextEditingController firstNameController =
+      TextEditingController(text: "first");
+  TextEditingController lastNameController =
+      TextEditingController(text: "last");
   TextEditingController otpController = TextEditingController();
   var errorText = ''.obs;
   var email = "".obs;
@@ -21,6 +27,8 @@ class AuthController extends GetxController {
 
   var showPassword = false.obs;
 
+  final authApiClient = AuthApiClient();
+
   @override
   void onInit() {
     super.onInit();
@@ -29,19 +37,25 @@ class AuthController extends GetxController {
 
   Future<void> checkAuthToken() async {
     isLoading(true);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? authToken = prefs.getString('auth_token');
-    print(authToken);
 
-    if (authToken != null && authToken.isNotEmpty) {
-      // Auth token found, validate it
-      // await validateAuthToken(authToken);
+    String? authToken = await Store.getAuthToken();
+    if (authToken != null  && authToken.isNotEmpty) {
+
+      //verify Auth Token
+      try {
+        var response  = await AuthApiClient.verifyToken();
+        uid = response.data["_id"] as String;
+      }catch(e) {
+print("Error in Verifying Token : $e");      }
+
+
       auth_token(authToken);
       isLoggedIn(true);
       isLoading(false);
       Get.offAllNamed('/home');
     } else {
       Future.delayed(const Duration(seconds: 2)).then((_) {
+        isLoading(false);
         goToLoginScreen();
       });
     }
@@ -90,27 +104,33 @@ class AuthController extends GetxController {
       UserLogInRequest user = UserLogInRequest(
           email: emailController.text, password: passwordController.text);
       var response = await AuthApiClient.login(user);
+      if (response.statusCode == 200) {
+        // Get the auth token from body
+        String authToken = response.data['token'] as String;
 
-      print(response.headers['x-auth-token'][0]);
-      // Get the auth token from headers
-      String authToken = response.headers['x-auth-token'][0] as String;
+        // Save the auth token to SharedPreferences
+        await Store.addAuthToken(authToken);
 
-      // Save the auth token to SharedPreferences
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_token', authToken);
+        // Set the auth token in the controller
+        auth_token.value = authToken;
+        uid = response.data['_id'] as String;
 
-      // Set the auth token in the controller
-      auth_token.value = authToken;
-
-      isLoggedIn(true);
-      isLoading(false);
-      emailController.text = "";
-      passwordController.text = "";
-      Get.offAllNamed('/home');
+        isLoggedIn(true);
+        isLoading(false);
+        emailController.text = "";
+        passwordController.text = "";
+        Get.offAllNamed('/home');
+      }
+      else{
+        errorText(response.data);
+      }
     } catch (e) {
       print('Reached');
       if (e is DioException) {
         if (e.response?.statusCode == 401) {
+          errorText(e.response?.data);
+        }
+        if (e.response?.statusCode == 400) {
           errorText(e.response?.data);
         }
       }
@@ -128,6 +148,7 @@ class AuthController extends GetxController {
     try {
       isLoading(true);
       errorText('');
+
       UserRegisterRequest user = UserRegisterRequest(
           firstName: firstNameController.text,
           lastName: lastNameController.text,
@@ -135,18 +156,17 @@ class AuthController extends GetxController {
           password: passwordController.text);
       var response = await AuthApiClient.register(user);
 
-      print(response.headers['uid'][0]);
-      // Get the auth token from headers
-      uid = response.headers['uid'][0] as String;
+      uid = response.data['uid'] as String;
 
       email(emailController.text);
-
       isLoading(false);
       Get.toNamed('/otp');
     } catch (e) {
       if (e is DioException) {
-        
         if (e.response?.statusCode == 400) {
+          errorText(e.response?.data);
+        }
+        if (e.response?.statusCode == 404) {
           errorText(e.response?.data);
         }
         if (e.response?.statusCode == 409) {
@@ -163,50 +183,81 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> resetPassword() async {
+  Future<void> verify_otp() async {
+    isLoading(true);
+    errorText('');
     try {
-      isLoading(true);
-      errorText('');
+      var response = await AuthApiClient.verify_otp(new VerifyOtpRequest(uid: uid, otp: otpController.text));
 
-      var response = await AuthApiClient.resetPassword(emailController.text);
+      String authToken = response.data['token'] as String;
 
-      print(response.headers['uid'][0]);
-      // Get the auth token from headers
-      uid = response.headers['uid'][0] as String;
+      // Save the auth token to SharedPreferences
+      await Store.addAuthToken(authToken);
 
-      email(emailController.text);
+      // Set the auth token in the controller
+      auth_token(authToken);
 
+      isLoggedIn(true);
       isLoading(false);
-      Get.toNamed('/otp');
+
+      emailController.text = "";
+      passwordController.text = "";
+      firstNameController.text = "";
+      lastNameController.text = "";
+      otpController.text = "";
+      Get.offAllNamed('/home');
     } catch (e) {
       if (e is DioException) {
-        
-        if (e.response?.statusCode == 400) {
-          errorText(e.response?.data);
-        }
-        if (e.response?.statusCode == 409) {
-          errorText(e.response?.data);
-        }
-        if (e.response?.statusCode == 401) {
-          errorText(e.response?.data);
-        }
+        errorText(e.response?.data["msg"]);
       }
-      // Handle login error
-      print("Error occurred during register: $e");
-      GetSnackBar(
-        message: e.toString(),
-      );
+      print("Error occurred during verify otp: $e");
     } finally {
       isLoading(false);
     }
   }
+
+  // Future<void> resetPassword() async {
+  //   try {
+  //     isLoading(true);
+  //     errorText('');
+  //
+  //     var response = await AuthApiClient.resetPassword(emailController.text);
+  //
+  //     print(response);
+  //     // Get the auth token from headers
+  //     uid = response.headers?['uid'] as String;
+  //
+  //     email(emailController.text);
+  //
+  //     isLoading(false);
+  //     Get.toNamed('/otp');
+  //   } catch (e) {
+  //     if (e is DioException) {
+  //       print(e.response);
+  //
+  //       if (e.response?.statusCode == 400) {
+  //         errorText(e.response?.data);
+  //       }
+  //       if (e.response?.statusCode == 409) {
+  //         errorText(e.response?.data);
+  //       }
+  //       if (e.response?.statusCode == 404) {
+  //         errorText(e.response?.data);
+  //       }
+  //     }
+  //     // Handle login error
+  //     print("Error occurred during Reset password: $e");
+  //     GetSnackBar(
+  //       message: e.toString(),
+  //     );
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   Future<void> logout() async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.remove('auth_token');
-
-      otpController.text = "";
+      await Store.removeAuthToken();
       Get.offAllNamed('/login');
     } catch (e) {
       print("Logout Error : ${e.toString()}");

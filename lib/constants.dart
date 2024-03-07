@@ -5,3 +5,8 @@ const Color backgroundColorLight = Color(0xFFF2F6FF);
 const Color backgroundColorDark = Color(0xFF25254B);
 const Color shadowColorLight = Color(0xFF4A5367);
 const Color shadowColorDark = Colors.black;
+
+
+const String BACKEND_URL = "https://7bkmgv7x-8080.inc1.devtunnels.ms";
+
+

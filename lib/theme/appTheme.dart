@@ -54,7 +54,7 @@ class AppTheme {
       dividerTheme: DividerThemeData(
         thickness: 1,
         space: 1,
-        color: colorScheme.onPrimary.withOpacity(0.1),
+        color: colors.blueGray400,
       ),
     );
   }
@@ -125,12 +125,14 @@ class TextThemes {
 
 /// Class containing the supported color schemes.
 class ColorSchemes {
-  static final primaryColorScheme = const ColorScheme.light(
+  static const primaryColorScheme = ColorScheme.light(
     // Primary colors
     primary: Color(0XFF314CA3),
 
     // On colors(text colors)
     onPrimary: Color(0X26FFFFFF),
+    secondary: Colors.white,
+    secondaryContainer: Colors.grey,
     onPrimaryContainer: Color(0XFF27282E),
   );
 }
@@ -168,6 +170,7 @@ class PrimaryColors {
 
   // Teal
   Color get teal50 => Colors.teal.shade50;
+  Color get teal100 => Colors.teal.shade100;
   Color get teal400 => Colors.teal.shade400;
 }
 

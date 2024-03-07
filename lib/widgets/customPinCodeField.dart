@@ -14,6 +14,7 @@ class CustomPinCodeTextField extends StatelessWidget {
     this.textStyle,
     this.hintStyle,
     this.validator,
+    this.isDisabled = false,
   }) : super(
           key: key,
         );
@@ -32,6 +33,8 @@ class CustomPinCodeTextField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  bool isDisabled;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -45,6 +48,7 @@ class CustomPinCodeTextField extends StatelessWidget {
   Widget get pinCodeTextFieldWidget => PinCodeTextField(
         appContext: context,
         controller: controller,
+        enabled: !isDisabled,
         length: 6,
         keyboardType: TextInputType.number,
         textStyle: textStyle ?? CustomTextStyles.headlineMediumBold,

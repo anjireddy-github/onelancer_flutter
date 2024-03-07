@@ -1,92 +1,59 @@
-//Request Model
-class UploadJobRequest {
+// Request
+class CreateJobRequest {
   final String title;
   final String experienceTitle;
-  final String data;
-  final double price;
+  final String description;
+  final PriceDetails priceDetails;
   final String currency;
   final ExpectedDuration expectedDuration;
+  final String status;
 
-  UploadJobRequest({
+
+  CreateJobRequest({
     required this.title,
     required this.experienceTitle,
-    required this.data,
-    required this.price,
+    required this.description,
+    required this.priceDetails,
     required this.currency,
     required this.expectedDuration,
+    required this.status,
   });
-
-  factory UploadJobRequest.fromJson(Map<String, dynamic> json) {
-    return UploadJobRequest(
-      title: json['title'] as String,
-      experienceTitle: json['experience_title'] as String,
-      data: json['data'] as String,
-      price: json['price'].toDouble(),
-      currency: json['currency'] as String,
-      expectedDuration: ExpectedDuration.fromJson(json['expected_duration']),
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
       'title': title,
       'experience_title': experienceTitle,
-      'data': data,
-      'price': price,
+      'data': description,
+      'price_details': priceDetails.toJson(),
       'currency': currency,
       'expected_duration': expectedDuration.toJson(),
+      'status': status
     };
-  }
-
-  @override
-  String toString() {
-    return 'UploadJobRequest{title: $title, experienceTitle: $experienceTitle, data: $data, price: $price, currency: $currency, expectedDuration: $expectedDuration}';
   }
 }
 
-class ExpectedDuration {
-  final int days;
-
-  ExpectedDuration({required this.days});
-
-  factory ExpectedDuration.fromJson(Map<String, dynamic> json) {
-    return ExpectedDuration(
-      days: json['days'] as int,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'days': days,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'ExpectedDuration{days: $days}';
-  }
-}
-
-//Response model
+//Response
 class JobResponse {
   final String title;
   final String experienceTitle;
   final String data;
-  final double price;
+  final List<String> attachments;
+  final PriceDetails priceDetails;
   final String currency;
   final String status;
   final String authorId;
   final ExpectedDuration expectedDuration;
   final String id;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final int v;
 
   JobResponse({
     required this.title,
     required this.experienceTitle,
     required this.data,
-    required this.price,
+    required this.attachments,
+    required this.priceDetails,
     required this.currency,
     required this.status,
     required this.authorId,
@@ -99,23 +66,63 @@ class JobResponse {
 
   factory JobResponse.fromJson(Map<String, dynamic> json) {
     return JobResponse(
-      title: json['title'] as String,
-      experienceTitle: json['experience_title'] as String,
-      data: json['data'] as String,
-      price: json['price'].toDouble(),
-      currency: json['currency'] as String,
-      status: json['status'] as String,
-      authorId: json['author_id'] as String,
+      title: json['title'],
+      experienceTitle: json['experience_title'],
+      data: json['data'],
+      attachments: List<String>.from(json['attachments']),
+      priceDetails: PriceDetails.fromJson(json['price_details']),
+      currency: json['currency'],
+      status: json['status'],
+      authorId: json['author_id'],
       expectedDuration: ExpectedDuration.fromJson(json['expected_duration']),
-      id: json['_id'] as String,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
-      v: json['__v'] as int,
+      id: json['_id'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      v: json['__v'],
+    );
+  }
+}
+
+class PriceDetails {
+  final String type;
+  final String value;
+
+  PriceDetails({
+    required this.type,
+    required this.value,
+  });
+
+  factory PriceDetails.fromJson(Map<String, dynamic> json) {
+    return PriceDetails(
+      type: json['type'],
+      value: json['value'].toString(),
     );
   }
 
-  @override
-  String toString() {
-    return 'JobResponse{title: $title, experienceTitle: $experienceTitle, data: $data, price: $price, currency: $currency, status: $status, authorId: $authorId, expectedDuration: $expectedDuration, id: $id, createdAt: $createdAt, updatedAt: $updatedAt, v: $v}';
+  Map<String, dynamic> toJson() {
+    return {
+      'type': type,
+      'value': value,
+    };
+  }
+}
+
+class ExpectedDuration {
+  final String days;
+
+  ExpectedDuration({
+    required this.days,
+  });
+
+  factory ExpectedDuration.fromJson(Map<String, dynamic> json) {
+    return ExpectedDuration(
+      days: json['days'].toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'days': days,
+    };
   }
 }

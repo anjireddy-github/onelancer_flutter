@@ -16,7 +16,14 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  AuthController _authController = Get.find();
+  AuthController authController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    authController.otpController = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,24 +41,36 @@ class _OtpScreenState extends State<OtpScreen> {
                 height: 16,
               ),
               Obx(() => Text(
-                    "Email Sent to : ${_authController.email}",
+                    "Email Sent to : ${authController.email}",
                     style: CustomTextStyles.titleSmallBluegray40001,
                   )),
-              const SizedBox(height: 24),
-              CustomPinCodeTextField(
-                context: context,
-                controller: _authController.otpController, onChanged: (String ) { 
-                  
-                 },
+              const SizedBox(height: 16),
+              Obx(() => Align(alignment: Alignment.topLeft, child: Text(authController.errorText.value, style: CustomTextStyles.titleSmallRed700,))),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Obx(() =>
+                CustomPinCodeTextField(
+                  context: context,
+                  isDisabled : authController.isLoading.value,
+                  controller: authController.otpController, onChanged: (String ) {
+
+                   },
+                )),
               ),
               const SizedBox(height: 42),
+              Obx(() =>
               CustomElevatedButton(
+                isDisabled: authController.isLoading.value,
+                  isLoading: authController.isLoading.value,
                   onPressed: () {
-                    //TODO : APi call
-                    // Navigator.of(context)
-                    //     .pushNamedAndRemoveUntil("/home", (route) => false);
+                    if(authController.otpController.text.length < 6){
+                      authController.errorText("Enter valid otp");
+                    }else{
+                      authController.verify_otp();
+                    }
                   },
-                  text: "VERIFY"),
+                  text: "VERIFY")),
             ],
           ),
         ),

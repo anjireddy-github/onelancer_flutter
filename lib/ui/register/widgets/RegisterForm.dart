@@ -15,14 +15,14 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    bool showPassword = false;
     return Form(
       key: _formKey,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Obx(() => Align(alignment: Alignment.topLeft, child: Text(authController.errorText.value, style: CustomTextStyles.titleSmallRed700,))),
-
+        Obx(() =>
         CustomTextFormField(
           controller: authController.firstNameController,
+          readOnly: authController.isLoading.value,
           hintText: "First Name",
           textInputType: TextInputType.text,
           validator: ValidationUtils.validateText,
@@ -30,12 +30,14 @@ class RegisterForm extends StatelessWidget {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           borderDecoration: TextFormFieldStyleHelper.fillIndigo,
           fillColor: themeColors.indigo50,
-        ),
+        )),
         const SizedBox(
           height: 16,
         ),
+        Obx(() =>
         CustomTextFormField(
           controller: authController.lastNameController,
+          readOnly: authController.isLoading.value,
           hintText: "Last Name",
           textInputType: TextInputType.text,
           validator: ValidationUtils.validateText,
@@ -43,12 +45,14 @@ class RegisterForm extends StatelessWidget {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           borderDecoration: TextFormFieldStyleHelper.fillIndigo,
           fillColor: themeColors.indigo50,
-        ),
+        )),
         const SizedBox(
           height: 16,
         ),
+        Obx(() =>
         CustomTextFormField(
           controller: authController.emailController,
+          readOnly: authController.isLoading.value,
           hintText: "Email",
           textInputType: TextInputType.emailAddress,
           validator: ValidationUtils.validateEmail,
@@ -56,12 +60,14 @@ class RegisterForm extends StatelessWidget {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           borderDecoration: TextFormFieldStyleHelper.fillIndigo,
           fillColor: themeColors.indigo50,
-        ),
+        )),
         const SizedBox(
           height: 16,
         ),
+        Obx(() =>
         CustomTextFormField(
           controller: authController.passwordController,
+          readOnly: authController.isLoading.value,
           hintText: "Password",
           textInputAction: TextInputAction.done,
           textInputType: TextInputType.visiblePassword,
@@ -70,20 +76,22 @@ class RegisterForm extends StatelessWidget {
               // setState(() {showPassword = !showPassword;});
             },
             child: Container(
-              margin: const EdgeInsets.fromLTRB(30, 13, 16, 13),
-              child: const Icon(
-                Icons.visibility,
-                size: 24,
+              padding: const EdgeInsets.only(right: 8),
+              child: IconButton(
+                onPressed: (){
+                  authController.showPassword(!authController.showPassword.value);
+                },
+                icon: Icon(authController.showPassword.value?Icons.visibility_off:Icons.visibility,size: 24, color: themeColors.blueGray600,),
               ),
             ),
           ),
           suffixConstraints: const BoxConstraints(maxHeight: 50),
           validator: ValidationUtils.validatePassword,
-          obscureText: showPassword,
+          obscureText: !authController.showPassword.value,
           contentPadding: const EdgeInsets.only(left: 16, top: 15, bottom: 15),
           borderDecoration: TextFormFieldStyleHelper.fillIndigo,
           fillColor: themeColors.indigo50,
-        ),
+        )),
         const SizedBox(height: 16),
         Align(
           alignment: Alignment.centerRight,
@@ -100,14 +108,17 @@ class RegisterForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
+        Obx(() =>
         CustomElevatedButton(
+          isDisabled: authController.isLoading.value,
+          isLoading: authController.isLoading.value,
           text: "REGISTER",
           onPressed: () {
             if (_formKey.currentState?.validate() ?? false) {
               authController.register();
             }
           },
-        ),
+        )),
       ]),
     );
   }

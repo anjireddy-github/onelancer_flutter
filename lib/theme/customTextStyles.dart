@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:onelancer_flutter/theme/appTheme.dart';
 
@@ -10,12 +9,18 @@ class CustomTextStyles {
   static get bodySmallBluegray900 => theme.textTheme.bodySmall!.copyWith(
         color: themeColors.blueGray900,
       );
-  static get bodyMediumBlack => theme.textTheme.bodyMedium!.copyWith(
-    color: themeColors.black
+
+  static get bodySmallGreen => theme.textTheme.bodySmall!.copyWith(
+    color: themeColors.green,
   );
-  static get bodyLargeWhite => theme.textTheme.bodyLarge!.copyWith(
-    color: Colors.white
-  );
+
+  static get bodyMediumBlack =>
+      theme.textTheme.bodyMedium!.copyWith(color: themeColors.black);
+  static get bodyLargeWhite =>
+      theme.textTheme.bodyLarge!.copyWith(color: Colors.white);
+
+  static get bodyLargeBlack =>
+      theme.textTheme.bodyLarge!.copyWith(color: Colors.black87);
   // Headline text style
   static get headlineMediumBold => theme.textTheme.headlineMedium!.copyWith(
         fontWeight: FontWeight.w700,
@@ -116,6 +121,10 @@ class CustomTextStyles {
   static get titleSmallSemiBold => theme.textTheme.titleSmall!.copyWith(
         fontWeight: FontWeight.w600,
       );
+  static get textButtonMedium => theme.textTheme.bodyMedium!.copyWith(
+      fontWeight: FontWeight.w600,
+      color: theme.colorScheme.primary,
+  );
 }
 
 extension on TextStyle {

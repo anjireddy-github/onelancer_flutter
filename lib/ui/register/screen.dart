@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: theme.textTheme.headlineMedium,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             Align(
@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: CustomTextStyles.titleMediumBluegray40001,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 24,
             ),
             RegisterForm(
@@ -53,13 +53,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: CustomTextStyles.bodySmallBluegray600,
             ),
             const SizedBox(height: 16),
+            Obx(() =>
             CustomElevatedButton(
               text: "LOGIN",
+              isDisabled : _authController.isLoading.value,
               onPressed: () {
                 _authController.errorText('');
                 Navigator.of(context).pushNamed('/login');
               },
-            ),
+            )),
           ],
                 ),
               ),

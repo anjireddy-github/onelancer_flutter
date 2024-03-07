@@ -24,19 +24,22 @@ class LoginFormWidget extends StatelessWidget {
           children: [
             Obx(() => Align(alignment: Alignment.topLeft, child: Text(authController.errorText.value, style: CustomTextStyles.titleSmallRed700,))),
             SizedBox(height: 8,),
+            Obx(() =>
             CustomTextFormField(
               controller: authController.emailController,
+              readOnly: authController.isLoading.value,
               hintText: "Email",
               textInputType: TextInputType.emailAddress,
               validator: ValidationUtils.validateEmail,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
               borderDecoration: TextFormFieldStyleHelper.fillIndigo,
               fillColor: themeColors.indigo50,
-            ),
+            )),
             const SizedBox(height: 16,),
             Obx(() => 
             CustomTextFormField(
               controller: authController.passwordController,
+              readOnly: authController.isLoading.value,
               hintText: "Password",
               textInputAction: TextInputAction.done,
               textInputType: TextInputType.visiblePassword,
@@ -46,13 +49,14 @@ class LoginFormWidget extends StatelessWidget {
                   onPressed: (){
                     authController.showPassword(!authController.showPassword.value);
                   },
-                  icon: Icon(authController.showPassword.value?Icons.visibility:Icons.visibility_off,size: 24, color: themeColors.blueGray600,),
+                  icon: Icon(authController.showPassword.value?Icons.visibility_off:Icons.visibility,size: 24, color: themeColors.blueGray600,),
                 ),
               ),
               suffixConstraints: const BoxConstraints(maxHeight: 50),
-              validator: ValidationUtils.validatePassword,
-              obscureText: authController.showPassword.value,
-              contentPadding: const EdgeInsets.only(left: 16,top: 15,bottom: 15),
+              validator: ValidationUtils.validateFieldLength,
+              obscureText: !authController.showPassword.value,
+              contentPadding: const EdgeInsets.only(left: 16,top: 15,bottom: 15
+              ),
               borderDecoration: TextFormFieldStyleHelper.fillIndigo,
               fillColor: themeColors.indigo50,
             )),
@@ -61,7 +65,7 @@ class LoginFormWidget extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text("Forgot pass word - coming soon.")));
+                  Get.toNamed("/forgot");
                 },
                 child: Text(
                   "Forgot password?",
@@ -70,15 +74,18 @@ class LoginFormWidget extends StatelessWidget {
               ),
             ),
               const SizedBox(height:16),
+            Obx(() =>
             CustomElevatedButton(
               text: "LOGIN",
+              isDisabled: authController.isLoading.value,
+              isLoading: authController.isLoading.value,
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {
                       authController.login();
                     }
               }
               ,
-            ),
+            )),
             
           ],
         ),

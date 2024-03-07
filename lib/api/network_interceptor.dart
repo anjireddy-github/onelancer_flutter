@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
+import 'package:onelancer_flutter/api/store.dart';
 
 /// NetworkInterceptor class for intercepting API requests, responses, and exceptions.
 ///
@@ -13,12 +14,17 @@ import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 /// modifying headers, or handling errors before and after making API requests.
 class NetworkInterceptor extends Interceptor {
   @override
-  void onRequest(
+  Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
-  ) {
+  ) async {
     super.onRequest(options, handler);
-    //intercept api request
+
+    // Retrieving the authentication token
+    String? authToken = await Store.getAuthToken();
+    if (authToken != null) {
+      options.headers["Authorization"] = "Bearer $authToken";
+    }
   }
 
   @override

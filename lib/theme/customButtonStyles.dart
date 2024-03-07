@@ -9,7 +9,7 @@ class CustomButtonStyles {
   static ButtonStyle get fillIndigo => ElevatedButton.styleFrom(
         backgroundColor: themeColors.indigo50,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(25),
         ),
       );
   static ButtonStyle get fillPrimaryTL20 => ElevatedButton.styleFrom(

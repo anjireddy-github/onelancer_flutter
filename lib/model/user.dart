@@ -53,3 +53,25 @@ class UserRegisterRequest {
     };
   }
 }
+
+class VerifyOtpRequest {
+  String uid;
+  String otp;
+
+  VerifyOtpRequest({required this.uid, required this.otp});
+
+  factory VerifyOtpRequest.fromJson(Map<String, dynamic> json) {
+    return VerifyOtpRequest(
+      uid: json['uid'] ?? '',
+      otp: json['otp'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['uid'] = uid;
+    data['otp'] = otp;
+    return data;
+  }
+}
+

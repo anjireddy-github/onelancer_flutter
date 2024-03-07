@@ -21,7 +21,9 @@ class ForgotPassword extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Form(
             key: formKey,
-            child: Column(children: [
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -48,8 +50,8 @@ class ForgotPassword extends StatelessWidget {
                 text: "SEND OTP",
                 onPressed: () {
                   if (formKey.currentState?.validate() ?? false) {
-                        authController.resetPassword();
-                      }
+                        // authController.resetPassword();
+                  }
                 }
               )
             ]),

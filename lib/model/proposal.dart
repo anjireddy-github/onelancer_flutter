@@ -2,13 +2,11 @@ class CreateProposalRequest {
   final String jobId;
   final String coverLetter;
   final double price;
-  final String currency;
 
   CreateProposalRequest({
     required this.jobId,
     required this.coverLetter,
     required this.price,
-    required this.currency,
   });
 
   Map<String, dynamic> toJson() {
@@ -16,36 +14,34 @@ class CreateProposalRequest {
       'job_id': jobId,
       'cover_letter': coverLetter,
       'price': price,
-      'currency': currency,
     };
   }
 
   @override
   String toString() {
-    return 'CreateProposalRequest{jobId: $jobId, coverLetter: $coverLetter, price: $price, currency: $currency}';
+    return 'CreateProposalRequest{jobId: $jobId, coverLetter: $coverLetter, price: $price}';
   }
 }
 
 
-//Response Model
 class ProposalResponse {
   final String jobId;
   final String freelancerId;
-  final String coverLetter;
-  final double price;
-  final String currency;
+  final String proposal;
+  final List<String> attachments;
+  final PriceDetails proposedPriceDetails;
   final String status;
   final String id;
-  final String createdAt;
-  final String updatedAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final int v;
 
   ProposalResponse({
     required this.jobId,
     required this.freelancerId,
-    required this.coverLetter,
-    required this.price,
-    required this.currency,
+    required this.proposal,
+    required this.attachments,
+    required this.proposedPriceDetails,
     required this.status,
     required this.id,
     required this.createdAt,
@@ -55,21 +51,33 @@ class ProposalResponse {
 
   factory ProposalResponse.fromJson(Map<String, dynamic> json) {
     return ProposalResponse(
-      jobId: json['job_id'] as String,
-      freelancerId: json['freelancer_id'] as String,
-      coverLetter: json['cover_letter'] as String,
-      price: json['price'].toDouble(),
-      currency: json['currency'] as String,
-      status: json['status'] as String,
-      id: json['_id'] as String,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String,
-      v: json['__v'] as int,
+      jobId: json['job_id'],
+      freelancerId: json['freelancer_id'],
+      proposal: json['proposal'],
+      attachments: List<String>.from(json['attachments']),
+      proposedPriceDetails: PriceDetails.fromJson(json['proposed_price_details']),
+      status: json['status'],
+      id: json['_id'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      v: json['__v'],
     );
   }
+}
 
-  @override
-  String toString() {
-    return 'ProposalResponse{jobId: $jobId, freelancerId: $freelancerId, coverLetter: $coverLetter, price: $price, currency: $currency, status: $status, id: $id, createdAt: $createdAt, updatedAt: $updatedAt, v: $v}';
+class PriceDetails {
+  final double value;
+  final String type;
+
+  PriceDetails({
+    required this.value,
+    required this.type,
+  });
+
+  factory PriceDetails.fromJson(Map<String, dynamic> json) {
+    return PriceDetails(
+      value: json['value'],
+      type: json['type'],
+    );
   }
 }
