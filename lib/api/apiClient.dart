@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:onelancer_flutter/api/networkInfo.dart';
 import 'package:onelancer_flutter/api/network_interceptor.dart';
+import 'package:onelancer_flutter/constants.dart';
 import 'package:onelancer_flutter/errors/exections.dart';
 
 class ApiClient {
@@ -8,7 +9,7 @@ class ApiClient {
 
   ApiClient()
       : dio = Dio(BaseOptions(
-          baseUrl: 'https://7bkmgv7x-8080.inc1.devtunnels.ms',
+          baseUrl: BACKEND_URL,
           connectTimeout: const Duration(seconds: 100),
           contentType: 'application/json',
         )) {

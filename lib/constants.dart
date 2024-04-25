@@ -7,6 +7,6 @@ const Color shadowColorLight = Color(0xFF4A5367);
 const Color shadowColorDark = Colors.black;
 
 
-const String BACKEND_URL = "https://7bkmgv7x-8080.inc1.devtunnels.ms";
+const String BACKEND_URL = "http://localhost:8080";
 
 
