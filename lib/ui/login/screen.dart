@@ -19,49 +19,52 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Welcome to Open Freelancer",
-                  style: theme.textTheme.headlineMedium,
+      body: Center(
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.9: 600,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Welcome to Open Freelancer",
+                    style: theme.textTheme.headlineMedium,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Login to your account",
+                const SizedBox(
+                  height: 16,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Login to your account",
+                    style: CustomTextStyles.titleMediumBluegray40001,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                LoginFormWidget(authController: _authController),
+                const SizedBox(height: 16),
+                Text(
+                  "OR",
                   style: CustomTextStyles.titleMediumBluegray40001,
                 ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              LoginFormWidget(authController: _authController),
-              const SizedBox(height: 16),
-              Text(
-                "OR",
-                style: CustomTextStyles.titleMediumBluegray40001,
-              ),
-              const SizedBox(height: 16),
-              Obx(() =>
-              CustomElevatedButton(
-                text: "REGISTER",
-                isDisabled: _authController.isLoading.value,
-                onPressed: () {
-                  _authController.errorText('');
-                  Navigator.of(context).pushNamed('/register');
-                },
-              ))
-            ],
-          )),
+                const SizedBox(height: 16),
+                Obx(() =>
+                CustomElevatedButton(
+                  text: "REGISTER",
+                  isDisabled: _authController.isLoading.value,
+                  onPressed: () {
+                    _authController.errorText('');
+                    Navigator.of(context).pushNamed('/register');
+                  },
+                ))
+              ],
+            )),
+      ),
     );
   }
 }

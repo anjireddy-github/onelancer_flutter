@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:onelancer_flutter/LandingPage.dart';
 import 'package:onelancer_flutter/controllers/auth_controller.dart';
 import 'package:onelancer_flutter/theme/appTheme.dart';
 import 'package:onelancer_flutter/ui/ForgotPassword.dart';
+import 'package:onelancer_flutter/ui/Landing/screen.dart';
 import 'package:onelancer_flutter/ui/Proposal/Proposals.dart';
 import 'package:onelancer_flutter/ui/Proposal/writeProposal.dart';
 import 'package:onelancer_flutter/ui/home/screen.dart';
+import 'package:onelancer_flutter/ui/home/screen_web.dart';
 import 'package:onelancer_flutter/ui/login/screen.dart';
 import 'package:onelancer_flutter/ui/message/chatScreen.dart';
 import 'package:onelancer_flutter/ui/message/screen.dart';
@@ -35,15 +36,15 @@ class MyApp extends StatelessWidget {
       title: 'Open Freelancer',
       initialRoute: '/',
       theme: theme,
-      routes: {
-        "/": (context) => const SplashScreen(),
+      routes: { 
+        "/": (context) => const LandingScreen(), //splash screen
         "/onboarding": (context) => const OnboardingScreen(),
         "/login": (context) => const LoginScreen(),
         "/register": (context) => const RegisterScreen(),
         "/forgot": (context) => const ForgotPassword(),
         // "/update_password: ()
         "/otp": (context) => const OtpScreen(),
-        "/home": (context) => const HomeScreen(),
+        "/home": (context) => HomeScreen(), //const HomeScreen(),
         "/chat" : (context) => const ChatScreen(),
         "/writeProposal" : (context) => const WriteProposal(),
         "/proposals": (context) => const Proposals(),

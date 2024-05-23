@@ -34,37 +34,46 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor:colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          visualDensity: const VisualDensity(
-            vertical: -4,
-            horizontal: -4,
-          ),
-          padding: EdgeInsets.zero,
-          textStyle: const TextStyle(
-            fontSize: 18,
-            fontFamily: "Inter",
-            fontWeight: FontWeight.bold,
-            color: Colors.white
-          )
-        ),
+            backgroundColor: colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            visualDensity: const VisualDensity(
+              vertical: -4,
+              horizontal: -4,
+            ),
+            padding: EdgeInsets.zero,
+            textStyle: const TextStyle(
+                fontSize: 18,
+                fontFamily: "Inter",
+                fontWeight: FontWeight.bold,
+                color: Colors.white)),
       ),
       dividerTheme: DividerThemeData(
         thickness: 1,
         space: 1,
         color: colors.blueGray400,
       ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateColor.resolveWith((states) => Colors.white),
+        checkColor:
+            MaterialStateColor.resolveWith((states) => colorScheme.primary),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+          side: BorderSide(
+            color: Colors.grey, // Change the border color to grey
+            width: 0.5,
+          ),
+        ),
+      ),
     );
   }
 }
 
-
-
 /// Class containing the supported text theme styles.
 class TextThemes {
-  static TextTheme textTheme(ColorScheme colorScheme, PrimaryColors colors) => TextTheme(
+  static TextTheme textTheme(ColorScheme colorScheme, PrimaryColors colors) =>
+      TextTheme(
         bodyLarge: TextStyle(
           color: colorScheme.onPrimary.withOpacity(1),
           fontSize: 18,
@@ -122,12 +131,11 @@ class TextThemes {
       );
 }
 
-
 /// Class containing the supported color schemes.
 class ColorSchemes {
   static const primaryColorScheme = ColorScheme.light(
     // Primary colors
-    primary: Color(0XFF314CA3),
+    primary: Colors.teal,
 
     // On colors(text colors)
     onPrimary: Color(0X26FFFFFF),
@@ -154,7 +162,7 @@ class PrimaryColors {
   Color get gray400 => Colors.grey.shade400;
 
   // Green
-  Color get green =>Colors.green;
+  Color get green => Colors.green;
 
   // Indigo
   Color get indigo100 => const Color(0XFFC1C9E3);
@@ -175,4 +183,4 @@ class PrimaryColors {
 }
 
 ThemeData get theme => AppTheme().themeData;
-PrimaryColors get themeColors =>  PrimaryColors();
+PrimaryColors get themeColors => PrimaryColors();
